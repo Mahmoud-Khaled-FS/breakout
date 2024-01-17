@@ -88,7 +88,7 @@ int main()
   Entity player = new_entity((WIDTH / 2) - (100 / 2), HEIGH - (HEIGH / 10), player_width, player_height);
   Entity ball = new_entity((WIDTH / 2) - 10, (HEIGH / 2) - 10, 20, 20);
 
-  Vector2 ball_dir = {.x = 0.06, .y = SPEED};
+  Vector2 ball_dir = {.x = 0, .y = 0};
 
   while (!WindowShouldClose())
   {
@@ -106,7 +106,10 @@ int main()
         player.pos.x += (1 * SPEED);
       }
     }
-
+    if (IsKeyPressed(KEY_SPACE))
+    {
+      ball_dir.y = SPEED;
+    }
     float c = collision(&player, &ball);
     if (collision(&player, &ball) != -1)
     {
