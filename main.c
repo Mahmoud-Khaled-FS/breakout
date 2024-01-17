@@ -82,6 +82,8 @@ char catch_edge(Entity *e)
 
 int main()
 {
+  InitAudioDevice();
+  Sound bamboo = LoadSound("./Bamboo.mp3");
   InitWindow(WIDTH, HEIGH, "breakout");
   float player_width = 100;
   float player_height = 20;
@@ -115,6 +117,7 @@ int main()
     {
       ball_dir.y = -ball_dir.y;
       ball_dir.x = c;
+      PlaySound(bamboo);
     }
     char edge = catch_edge(&ball);
     if (edge == 'r' || edge == 'l')
