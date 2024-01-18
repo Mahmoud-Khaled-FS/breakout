@@ -179,7 +179,9 @@ int main()
     }
     if (IsKeyPressed(KEY_Q))
     {
+      UnloadSound(bamboo);
       CloseWindow();
+      return 0;
     }
     if (IsKeyPressed(KEY_SPACE))
     {
