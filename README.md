@@ -4,7 +4,7 @@
 
 This project is a simple implementation of the classic Breakout game in the C programming language using the Raylib game development library. The game features a paddle, a ball, and bricks to break. The objective is to bounce the ball off the paddle to break all the bricks.
 
-![screenshot](https://github.com/Mahmoud-Khaled-FS/breakout/blob/main/screenshots/Screenshot%20from%202024-01-18%2015-29-28.png)
+![screenshot](https://github.com/Mahmoud-Khaled-FS/breakout/blob/main/screenshots/Screencast%20from%202024-01-18%2015-44-24.webm)
 
 ## Prerequisites
 
