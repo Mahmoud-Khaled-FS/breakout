@@ -53,19 +53,11 @@ float collision(Entity *e1, Entity *e2)
   {
     float center_e1 = e1_xe - e1->size.x / 2;
     float center_e2 = e2_xe - e2->size.x / 2;
-    printf("e1: %f, e2: %f\n", center_e1, center_e2);
     float dist = center_e1 - center_e2;
     return -(dist / (e1->size.x / 2) * 5);
   }
   return -999;
 }
-
-// bool is_end(Entity *ball)
-// {
-//   if (ball->pos.y + ball->size.y >= HEIGH)
-//     return true;
-//   return false;
-// }
 
 void move_ball(Entity *ball, Vector2 *dir)
 {
@@ -92,7 +84,6 @@ char catch_edge(Entity *e)
 
 void create_blocks(Entity *list, int size)
 {
-  // float end_width = WIDTH - 20;
   for (int i = 0; i < size; i++)
   {
     int line = i / MAX_LINE_BLOCK_COUNT;
@@ -124,7 +115,7 @@ Entity create_player()
 }
 Entity create_ball()
 {
-  return new_entity((WIDTH / 2) - 10, (HEIGH / 2) - 10, 10, 10, WHITE);
+  return new_entity((WIDTH / 2) - 10, (HEIGH / 2) - 10, 13, 13, WHITE);
 }
 Vector2 reset_ball()
 {
@@ -268,7 +259,6 @@ int main()
       sprintf(score_text, "Score: %d", score);
       DrawText(score_text, 12, 10, 16, WHITE);
       DrawCircleV(ball.pos, ball.size.x, ball.color);
-      // DrawRectangleV(ball.pos, ball.size, ball.color);
     }
     DrawRectangleV(player.pos, player.size, player.color);
     render_blocks(blocks, BLOCK_COUNT);
