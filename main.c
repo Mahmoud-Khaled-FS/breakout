@@ -203,7 +203,13 @@ int main()
       {
         title = "GAME OVER";
         sprintf(score_text, "Score: %d", score);
-        render_text_in_center(score_text, 35, HEIGH / 2 + 60, RED);
+        Color c = RED;
+        if (score == BLOCK_COUNT)
+        {
+          title = "WIN!";
+          c = GREEN;
+        }
+        render_text_in_center(score_text, 35, HEIGH / 2 + 60, c);
         render_text_in_center("Press r to restart.", 27, HEIGH / 2 + 120, WHITE);
         render_text_in_center("Press q to exit.", 27, HEIGH / 2 + 160, WHITE);
       }
@@ -277,8 +283,8 @@ int main()
       sprintf(score_text, "Score: %d", score);
       DrawText(score_text, 12, 10, 16, WHITE);
       // DrawRectangleV(ball.pos, ball.size, ball.color);
+      DrawCircleV(ball.pos, ball.radius, ball.color);
     }
-    DrawCircleV(ball.pos, ball.radius, ball.color);
     DrawRectangleV(player.pos, player.size, player.color);
     render_blocks(blocks, BLOCK_COUNT);
     EndDrawing();
