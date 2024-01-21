@@ -9,6 +9,7 @@
 #define SPEED 10.0f
 #define PLAYER_WIDTH 200.0f
 #define PLAYER_HEIGHT 20.0f
+#define BALL_RADIUS 10.0f
 #define BLOCK_WIDTH 80
 #define MAX_LINE_BLOCK_COUNT 12
 #define BLOCK_COUNT 6 * MAX_LINE_BLOCK_COUNT
@@ -21,6 +22,13 @@ typedef struct
   bool visible;
   Color color;
 } Entity;
+
+typedef struct
+{
+  Vector2 pos;
+  float radius;
+  Color color;
+} Ball;
 
 Entity new_entity(float x, float y, float width, float height, Color color)
 {
@@ -39,38 +47,40 @@ Entity new_entity(float x, float y, float width, float height, Color color)
   return e;
 }
 
-float collision(Entity *e1, Entity *e2)
+float collision(Entity *entity, Ball *ball)
 {
-  float e1_xs = e1->pos.x;
-  float e1_xe = e1->pos.x + e1->size.x;
-  float e2_xs = e2->pos.x;
-  float e2_xe = e2->pos.x + e2->size.x;
-  float e1_ys = e1->pos.y;
-  float e1_ye = e1->pos.y + e1->size.y;
-  float e2_ys = e2->pos.y;
-  float e2_ye = e2->pos.y + e2->size.y;
-  if (e1_xs <= e2_xe && e2_xs <= e1_xe && e1_ys <= e2_ye && e2_ys <= e1_ye && e1->visible && e2->visible)
+  float entity_xs = entity->pos.x;
+  float entity_xe = entity->pos.x + entity->size.x;
+  float ball_xs = ball->pos.x - ball->radius;
+  float ball_xe = ball->pos.x + ball->radius;
+
+  float entity_ys = entity->pos.y;
+  float entity_ye = entity->pos.y + entity->size.y;
+  float ball_ys = ball->pos.y - ball->radius;
+  float ball_ye = ball->pos.y + ball->radius;
+
+  if (entity_xs <= ball_xe && ball_xs <= entity_xe && entity_ys <= ball_ye && ball_ys <= entity_ye && entity->visible)
   {
-    float center_e1 = e1_xe - e1->size.x / 2;
-    float center_e2 = e2_xe - e2->size.x / 2;
-    float dist = center_e1 - center_e2;
-    return -(dist / (e1->size.x / 2) * 5);
+    float center_entity = entity_xe - entity->size.x / 2;
+    float center_ball = ball->pos.x;
+    float dist = center_entity - center_ball;
+    return -(dist / (entity->size.x / 2) * 5);
   }
   return -999;
 }
 
-void move_ball(Entity *ball, Vector2 *dir)
+void move_ball(Ball *ball, Vector2 *dir)
 {
   ball->pos.y += dir->y;
   ball->pos.x += dir->x;
 }
 
-char catch_edge(Entity *e)
+char catch_edge(Ball *e)
 {
-  float e_xs = e->pos.x;
-  float e_xe = e->pos.x + e->size.x;
-  float e_ys = e->pos.y;
-  float e_ye = e->pos.y + e->size.y;
+  float e_xs = e->pos.x - e->radius;
+  float e_xe = e->pos.x + e->radius;
+  float e_ys = e->pos.y - e->radius;
+  float e_ye = e->pos.y + e->radius;
   if (e_xs <= 0)
     return 'l';
   if (e_xe >= WIDTH)
@@ -113,9 +123,17 @@ Entity create_player()
 {
   return new_entity((WIDTH / 2) - (PLAYER_WIDTH / 2), HEIGH - (HEIGH / 10), PLAYER_WIDTH, PLAYER_HEIGHT, YELLOW);
 }
-Entity create_ball()
+
+Ball create_ball()
 {
-  return new_entity((WIDTH / 2) - 10, (HEIGH / 2) - 10, 13, 13, WHITE);
+  return (Ball){
+      .radius = BALL_RADIUS,
+      .pos = {
+          .x = WIDTH / 2,
+          .y = HEIGH / 2},
+      .color = WHITE,
+  };
+  // return new_entity((WIDTH / 2) - 10, (HEIGH / 2) - 10, 13, 13, WHITE);
 }
 Vector2 reset_ball()
 {
@@ -142,7 +160,7 @@ int main()
   Sound bamboo = LoadSound("./Bamboo.mp3");
   // State
   Entity player = create_player();
-  Entity ball = create_ball();
+  Ball ball = create_ball();
   Vector2 ball_dir = reset_ball();
   Entity blocks[BLOCK_COUNT] = {0};
   create_blocks(blocks, BLOCK_COUNT);
@@ -258,8 +276,9 @@ int main()
 
       sprintf(score_text, "Score: %d", score);
       DrawText(score_text, 12, 10, 16, WHITE);
-      DrawCircleV(ball.pos, ball.size.x, ball.color);
+      // DrawRectangleV(ball.pos, ball.size, ball.color);
     }
+    DrawCircleV(ball.pos, ball.radius, ball.color);
     DrawRectangleV(player.pos, player.size, player.color);
     render_blocks(blocks, BLOCK_COUNT);
     EndDrawing();
