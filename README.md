@@ -18,7 +18,7 @@ Before you can build and run the Breakout game, make sure you have the following
 
 ```bash
 git clone https://github.com/Mahmoud-Khaled-FS/breakout
-cd breakout-game-c-raylib
+cd breakout
 ```
 
 2- Compile the source code using a C compiler (e.g., GCC):
