@@ -17,7 +17,7 @@ Before you can build and run the Breakout game, make sure you have the following
 1- Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/breakout-game-c-raylib.git
+git clone https://github.com/Mahmoud-Khaled-FS/breakout
 cd breakout-game-c-raylib
 ```
 
